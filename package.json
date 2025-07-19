@@ -1,30 +1,88 @@
 {
   "name": "comment-notes",
-  "displayName": "comment-notes",
-  "description": "Write long-form comments in a separate ui box linked by ID and stored externally",
+  "displayName": "Comment Notes",
+  "description": "Write long-form comments in a separate UI box linked by unique IDs and stored externally in JSON files",
   "publisher": "vikaslocaldev",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.102.0"
   },
   "categories": [
-    "Other"
+    "Other",
+    "Documentation",
+    "Productivity"
+  ],
+  "keywords": [
+    "comments",
+    "documentation",
+    "notes",
+    "inline",
+    "markdown",
+    "productivity"
   ],
   "activationEvents": [
-    "*"
+    "onLanguage:javascript",
+    "onLanguage:typescript",
+    "onLanguage:python",
+    "onLanguage:java",
+    "onLanguage:c",
+    "onLanguage:cpp",
+    "onLanguage:csharp",
+    "onLanguage:php",
+    "onLanguage:go",
+    "onLanguage:rust",
+    "onLanguage:ruby",
+    "onLanguage:swift",
+    "onLanguage:kotlin",
+    "onLanguage:scala",
+    "onLanguage:r",
+    "onLanguage:matlab",
+    "onLanguage:julia",
+    "onLanguage:perl",
+    "onLanguage:shellscript",
+    "onLanguage:yaml",
+    "onLanguage:json",
+    "onLanguage:xml",
+    "onLanguage:html",
+    "onLanguage:css",
+    "onLanguage:scss",
+    "onLanguage:less",
+    "onLanguage:markdown"
   ],
   "files": [
     "media",
-    "src"
+    "out"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "comment-notes.helloWorld",
-        "title": "Hello World"
+        "command": "comment-notes.openCommentBox",
+        "title": "Open Comment Box",
+        "category": "Comment Notes"
+      },
+      {
+        "command": "comment-notes.deleteCommentById",
+        "title": "Delete Comment",
+        "category": "Comment Notes"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Comment Notes",
+      "properties": {
+        "commentNotes.autoInsertSpace": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically insert space after comment patterns"
+        },
+        "commentNotes.commentFileLocation": {
+          "type": "string",
+          "default": "project-root",
+          "enum": ["project-root", "workspace-root"],
+          "description": "Where to store comment.json files"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
@@ -32,8 +90,19 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src",
-    "test": "vscode-test"
+    "test": "npx vscode-test",
+    "package": "vsce package",
+    "publish": "vsce publish"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/comment-notes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/comment-notes/issues"
+  },
+  "homepage": "https://github.com/yourusername/comment-notes#readme",
+  "license": "MIT",
   "devDependencies": {
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
@@ -43,7 +112,8 @@
     "@vscode/test-cli": "^0.0.11",
     "@vscode/test-electron": "^2.5.2",
     "eslint": "^9.25.1",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vsce": "^2.15.0"
   },
   "dependencies": {
     "marked": "^16.1.0",

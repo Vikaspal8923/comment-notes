@@ -50,7 +50,7 @@ export class CommentUI {
               const comments = readComments(projectRoot);
               comments[this.id] = message.content;
               writeComments(projectRoot, comments);
-              
+
               // Close the webview after successful save
               this.panel.dispose();
             } catch (err) {
@@ -60,19 +60,18 @@ export class CommentUI {
           case "delete":
             try {
               deleteComment(projectRoot, this.id);
-          
-              
+
               // Remove the comment pattern from the code file
               const document = vscode.workspace.openTextDocument(this.filePath);
-              document.then(doc => {
+              document.then((doc) => {
                 const editor = vscode.window.activeTextEditor;
                 if (editor && editor.document === doc) {
                   const text = doc.getText();
-                  const pattern = new RegExp(`\\s*//\\[cmt:${this.id}\\]`, 'g');
-                  const newText = text.replace(pattern, '');
-                  
+                  const pattern = new RegExp(`\\s*//\\[cmt:${this.id}\\]`, "g");
+                  const newText = text.replace(pattern, "");
+
                   if (newText !== text) {
-                    editor.edit(editBuilder => {
+                    editor.edit((editBuilder) => {
                       const fullRange = new vscode.Range(
                         doc.positionAt(0),
                         doc.positionAt(text.length)
@@ -82,7 +81,7 @@ export class CommentUI {
                   }
                 }
               });
-              
+
               // Close the webview after successful deletion
               this.panel.dispose();
             } catch (err) {
@@ -111,7 +110,7 @@ export class CommentUI {
       vscode.ViewColumn.Three,
       {
         enableScripts: true,
-        retainContextWhenHidden: true
+        retainContextWhenHidden: true,
       }
     );
 
@@ -121,23 +120,31 @@ export class CommentUI {
 
   private updateHtml(content: string) {
     const quillJsUri = this.panel.webview.asWebviewUri(
-      vscode.Uri.file(path.join(this.context.extensionPath, 'media', 'quill.min.js'))
+      vscode.Uri.file(
+        path.join(this.context.extensionPath, "media", "quill.min.js")
+      )
     );
     const quillCssUri = this.panel.webview.asWebviewUri(
-      vscode.Uri.file(path.join(this.context.extensionPath, 'media', 'quill.snow.css'))
+      vscode.Uri.file(
+        path.join(this.context.extensionPath, "media", "quill.snow.css")
+      )
     );
     const turndownJsUri = this.panel.webview.asWebviewUri(
-      vscode.Uri.file(path.join(this.context.extensionPath, 'media', 'turndown.min.js'))
+      vscode.Uri.file(
+        path.join(this.context.extensionPath, "media", "turndown.min.js")
+      )
     );
     const markedJsUri = this.panel.webview.asWebviewUri(
-      vscode.Uri.file(path.join(this.context.extensionPath, 'media', 'marked.min.js'))
+      vscode.Uri.file(
+        path.join(this.context.extensionPath, "media", "marked.min.js")
+      )
     );
-    
+
     console.log("Quill JS URI:", quillJsUri.toString());
     console.log("Quill CSS URI:", quillCssUri.toString());
     console.log("Turndown JS URI:", turndownJsUri.toString());
     console.log("Marked JS URI:", markedJsUri.toString());
-    
+
     this.panel.webview.html = `
     <!DOCTYPE html>
     <html lang="en">

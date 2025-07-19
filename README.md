@@ -1,71 +1,141 @@
-# comment-notes README
+# Comment Notes
 
-This is the README for your extension "comment-notes". After writing up a brief description, we recommend including the following sections.
+A powerful VS Code extension for managing long-form comments with unique IDs, stored externally in JSON files. Perfect for developers who need to write detailed documentation without cluttering their code.
 
-## Features
+![Comment Notes Demo](https://via.placeholder.com/800x400/2d3748/ffffff?text=Comment+Notes+Demo)
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## ✨ Features
 
-For example if there is an image subfolder under your extension project workspace:
+- **🆔 Unique Comment IDs**: Automatically generate unique 8-character IDs for each comment
+- **📝 Rich Text Editor**: Beautiful Quill.js editor with bullet points and markdown support
+- **🔗 Hover Integration**: Hover over comment patterns to see content and quick actions
+- **💾 External Storage**: Comments stored in `comment.json` files near project roots
+- **🔄 Auto-Conversion**: Type `//[cmt]` and it automatically converts to `//[cmt:ID]`
+- **🔒 Read-Only IDs**: Comment IDs are protected from accidental editing
+- **🧹 Smart Cleanup**: Orphaned comments are automatically cleaned up
+- **🎨 Modern UI**: Clean, Discord/Slack-style interface that fits VS Code's theme
 
-\!\[feature X\]\(images/feature-x.png\)
+## 🚀 Quick Start
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+1. **Install the extension** from the VS Code marketplace
+2. **Type `//[cmt]`** in any code file and press Enter
+3. **Hover over the generated pattern** to see your comment or "No comment yet"
+4. **Click "Open Comment Box"** to edit your comment
+5. **Save** and your comment is stored in a `comment.json` file
 
-## Requirements
+## 📖 Usage
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+### Creating Comments
 
-## Extension Settings
+```javascript
+//[cmt:abc12345] This is a simple comment
+function myFunction() {
+    // Your code here
+}
+```
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+### Comment Patterns
 
-For example:
+- **Auto-conversion**: Type `//[cmt]` → converts to `//[cmt:uniqueID]`
+- **Manual**: Type `//[cmt:yourID]` (ID will be normalized to 8 characters)
+- **Read-only**: IDs cannot be edited, only deleted
 
-This extension contributes the following settings:
+### Managing Comments
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+- **Hover**: See comment content and quick actions
+- **Open**: Click "Open Comment Box" to edit in a rich text editor
+- **Delete**: Click "Delete Comment" to remove both pattern and content
+- **Storage**: Comments saved as markdown in `comment.json` files
 
-## Known Issues
+## ⚙️ Configuration
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+The extension adds these settings to VS Code:
 
-## Release Notes
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `commentNotes.autoInsertSpace` | `true` | Automatically insert space after comment patterns |
+| `commentNotes.commentFileLocation` | `project-root` | Where to store comment.json files |
 
-Users appreciate release notes as you update your extension.
+## 🗂️ File Structure
+
+```
+your-project/
+├── src/
+│   └── your-code.js
+├── comment.json          ← Comments stored here
+└── package.json
+```
+
+The `comment.json` file contains:
+```json
+{
+  "abc12345": "# My Comment\n\nThis is a detailed comment with **markdown** support.",
+  "def67890": "- Bullet point 1\n- Bullet point 2"
+}
+```
+
+## 🛠️ Development
+
+### Prerequisites
+
+- Node.js 18+
+- VS Code Extension Development Host
+
+### Setup
+
+```bash
+git clone https://github.com/yourusername/comment-notes.git
+cd comment-notes
+npm install
+npm run compile
+```
+
+### Testing
+
+```bash
+npm run test
+```
+
+### Building
+
+```bash
+npm run package
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🐛 Known Issues
+
+- Comments are stored per project root (not workspace root)
+- Large comment files may impact performance
+- Quill editor requires internet connection for initial load
+
+## 🔄 Release Notes
 
 ### 1.0.0
+- Initial release
+- Basic comment management with unique IDs
+- Hover provider with quick actions
+- Rich text editor with markdown support
+- External JSON storage
+- Auto-conversion and ID protection
 
-Initial release of ...
+## 📞 Support
 
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+- **Issues**: [GitHub Issues](https://github.com/yourusername/comment-notes/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/yourusername/comment-notes/discussions)
+- **Email**: your-email@example.com
 
 ---
 
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+**Made with ❤️ for the VS Code community**

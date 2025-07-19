@@ -17,7 +17,7 @@ export function showCommentFileError(message: string, error?: any) {
 export function findNearestProjectRoot(filePath: string): string | undefined {
   let dir = path.dirname(filePath);
   const workspaceFolders = vscode.workspace.workspaceFolders;
-  if (!workspaceFolders) return undefined;
+  if (!workspaceFolders) {return undefined;}
   const workspaceRoot = workspaceFolders[0].uri.fsPath;
 
   while (dir.startsWith(workspaceRoot)) {
@@ -27,7 +27,7 @@ export function findNearestProjectRoot(filePath: string): string | undefined {
       }
     }
     const parent = path.dirname(dir);
-    if (parent === dir) break;
+    if (parent === dir) {break;}
     dir = parent;
   }
   // Fallback: workspace root
@@ -37,7 +37,7 @@ export function findNearestProjectRoot(filePath: string): string | undefined {
 // Read comments from comment.json in the given directory
 export function readComments(projectRoot: string): Record<string, string> {
   const file = path.join(projectRoot, "comment.json");
-  if (!fs.existsSync(file)) return {};
+  if (!fs.existsSync(file)) {return {};}
   try {
     const data = fs.readFileSync(file, "utf8");
     return JSON.parse(data);

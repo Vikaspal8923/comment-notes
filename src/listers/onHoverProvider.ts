@@ -11,7 +11,7 @@ export function registerCommentHoverProvider(): vscode.Disposable {
 
         let match: RegExpExecArray | null;
         while ((match = regex.exec(lineText))) {
-          if (match.index === undefined) continue;
+          if (match.index === undefined) {continue;}
 
           const start = match.index;
           const end = start + match[0].length;
