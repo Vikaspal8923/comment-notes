@@ -15,8 +15,11 @@ function normalizeId(id: string): string {
   return id.slice(0, 8);
 }
 
-function generateCommentTag(id: string, needsTrailingSpace: boolean = false): string {
-  return ` //[cmt:${id}]${needsTrailingSpace ? ' ' : ''}`;
+function generateCommentTag(
+  id: string,
+  needsTrailingSpace: boolean = false
+): string {
+  return ` //[cmt:${id}]${needsTrailingSpace ? " " : ""}`;
 }
 
 function extractCommentTag(lineText: string): {
@@ -26,7 +29,7 @@ function extractCommentTag(lineText: string): {
 } | null {
   const regex = / ?\/\/\[cmt:([a-zA-Z0-9_-]{1,})\]/;
   const match = regex.exec(lineText);
-  if (!match || match.index === undefined) return null;
+  if (!match || match.index === undefined) {return null;}
 
   const id = normalizeId(match[1]);
   const start = match.index;
@@ -76,12 +79,16 @@ export async function insertCommentWithId(
   });
 
   // Place cursor inside the pattern (before the closing bracket)
-  const insidePosition = replaceRange.start.translate(0, newText.length - (needsTrailingSpace ? 2 : 1));
+  const insidePosition = replaceRange.start.translate(
+    0,
+    newText.length - (needsTrailingSpace ? 2 : 1)
+  );
   editor.selection = new vscode.Selection(insidePosition, insidePosition);
   editor.revealRange(new vscode.Range(insidePosition, insidePosition));
 
   // Store the original ID for this line and file
-  if (!originalIds[editor.document.uri.fsPath]) originalIds[editor.document.uri.fsPath] = {};
+  if (!originalIds[editor.document.uri.fsPath])
+    {originalIds[editor.document.uri.fsPath] = {};}
   originalIds[editor.document.uri.fsPath][replaceRange.start.line] = id;
 
   isConverting = false;
@@ -96,10 +103,10 @@ export function registerCommentTriggerListener(
 ): vscode.Disposable {
   const docChangeListener = vscode.workspace.onDidChangeTextDocument(
     (event) => {
-      if (isConverting) return;
+      if (isConverting) {return;}
 
       const editor = vscode.window.activeTextEditor;
-      if (!editor || event.document !== editor.document) return;
+      if (!editor || event.document !== editor.document) {return;}
 
       for (const change of event.contentChanges) {
         const lineText = event.document.lineAt(change.range.start.line).text;
@@ -151,13 +158,18 @@ export function registerCommentTriggerListener(
           }
 
           // Ensure a space after the pattern if there is text immediately after
-          if (end < lineText.length && lineText[end] !== ' ') {
+          if (end < lineText.length && lineText[end] !== " ") {
             isConverting = true;
-            editor.edit(editBuilder => {
-              editBuilder.insert(new vscode.Position(change.range.start.line, end), ' ');
-            }).then(() => {
-              isConverting = false;
-            });
+            editor
+              .edit((editBuilder) => {
+                editBuilder.insert(
+                  new vscode.Position(change.range.start.line, end),
+                  " "
+                );
+              })
+              .then(() => {
+                isConverting = false;
+              });
           }
         }
       }
